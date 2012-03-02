@@ -23,7 +23,6 @@ describe Cryptolocker::User do
       end
 
       it "returns nil if the password is wrong" do
-        p Cryptolocker.public_key
         Cryptolocker::User.create!("tom", "password", "password")
         Cryptolocker::User.find("tom", "not my password").should be_nil
       end
