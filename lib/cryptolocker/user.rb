@@ -20,7 +20,11 @@ class Cryptolocker::User
   end
 
   def self.all_names
-    Cryptolocker.store.keys.grep(/^users\.[^\.]+\.key$/).map{|k| k.split('.', 3)[1] }
+    if Cryptolocker.store.is_a? Cryptolocker::S3Store
+      Cryptolocker.store.keys("users.")
+    else
+      Cryptolocker.store.keys
+    end.grep(/^users\.[^\.]+\.key$/).map{|k| k.split('.', 3)[1] }
   end
 
   def self.delete(username)
