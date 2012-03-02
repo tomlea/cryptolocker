@@ -19,6 +19,16 @@ class Cryptolocker::User
     find(username, password)
   end
 
+  def self.all_names
+    Cryptolocker.store.keys.grep(/^users\.[^\.]+\.key$/).map{|k| k.split('.', 3)[1] }
+  end
+
+  def self.delete(username)
+    raise Cryptolocker::User::AuthError, "You can't delete the admin user" if username == "admin"
+
+    Cryptolocker.store.delete("users.#{username}.key")
+  end
+
   def self.valid_username_and_password?(username, password)
     personal_key = AES.key_from_password(password)
     private_key =  AES.decrypt(Cryptolocker.store["users.#{username}.key"], personal_key)

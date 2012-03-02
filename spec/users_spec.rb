@@ -87,5 +87,21 @@ describe Cryptolocker::User do
 
     end
 
+    describe ".delete()" do
+
+      it "deletes the user" do
+        Cryptolocker::User.delete("tom")
+        Cryptolocker::User.find("tom", "password").should be_nil
+        Cryptolocker::User.all_names.should_not include("tom")
+      end
+
+      it "does not delete the admin user" do
+        lambda{
+          Cryptolocker::User.delete("admin")
+        }.should raise_exception(Cryptolocker::User::AuthError)
+      end
+
+    end
+
   end
 end

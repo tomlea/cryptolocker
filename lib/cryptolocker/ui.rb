@@ -15,14 +15,21 @@ class Cryptolocker::UI < Sinatra::Application
     redirect("/") if Cryptolocker.initial_setup_mode?
   end
 
-  attr_reader :user
+  def protect_and_bounce_back_if_not_set_up!
+    bounce_back_if_not_set_up!
+    protected!
+  end
 
   def authorized?
     @user ||= load_user
   end
 
-  def admin?
-    authorized? and user.username == "admin"
+  helpers do
+    attr_reader :user
+
+    def admin?
+      authorized? and user.username == "admin"
+    end
   end
 
   def load_user
@@ -55,16 +62,38 @@ class Cryptolocker::UI < Sinatra::Application
   end
 
   get '/secure/private-key' do
-    bounce_back_if_not_set_up!
-    protected!
+    protect_and_bounce_back_if_not_set_up!
     if admin?
       content_type "text/plain"
       user.key
     else
-      @message = "Only the admin user can see the private key."
-      status 401
-      erb :error
+      admin_only_message("Only the admin user can see the private key.")
     end
+  end
+
+  get '/secure/users' do
+    protect_and_bounce_back_if_not_set_up!
+    @users = Cryptolocker::User.all_names
+    erb :users
+  end
+
+  post '/secure/users' do
+    protect_and_bounce_back_if_not_set_up!
+    return admin_only_message unless admin? or user.username == params[:username]
+    user.grant_to_new_user!(params[:username], params[:password], params[:password_confirmation])
+    redirect "/secure/users"
+  end
+
+  delete '/secure/users/:username' do
+    protect_and_bounce_back_if_not_set_up!
+    return admin_only_message unless admin? or user.username == params[:username]
+    Cryptolocker::User.delete(params[:username])
+    redirect "/secure/users"
+  end
+
+  def admin_only_message(message = "Admin only.")
+    @message = message
+    erb :error
   end
 
 end

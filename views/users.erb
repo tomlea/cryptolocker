@@ -1,0 +1,41 @@
+<% if admin? %>
+
+  <h1>Users</h1>
+
+  <ul>
+    <% @users.each do |name| %>
+    <li>
+      <% if name == "admin" %>
+        <%= name %>
+      <% else %>
+        <form action="<%= url("/secure/users/#{name}") %>" method="post">
+          <%= name %>
+          <input name="_method" type="hidden" value="DELETE"/>
+          <input type="submit" value="Delete" />
+        </form>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+
+  <h2>Create New User</h2>
+  <p>(or update the password for the existing one)</p>
+
+  <form action="<%= url("/secure/users") %>" method="post">
+    <label>Username: <input name="username" type="text" value="" placeholder="username"/></label>
+    <label>Password: <input name="password" type="password"/></label>
+    <label>Password (again): <input name="password_confirmation" type="password"/></label>
+    <input type="submit" value="Create Account" />
+  </form>
+
+<% end %>
+
+<h1>Change Password</h1>
+
+<form action="<%= url("/secure/users") %>" method="post">
+  <label>Password: <input name="password" type="password"/></label>
+  <label>Password (again): <input name="password_confirmation" type="password"/></label>
+  <input type="submit" value="Update Password" />
+
+  <input name="username" type="hidden" value="<%= user.username %>"/>
+</form>
