@@ -1,5 +1,18 @@
 <h1>There is nothing much to see here.</h1>
 
-<p>You can <strong>POST</strong> new content here via the <a href="<%= url("/submit") %>">API end point</a>.</p>
+<p>
+  You can <strong>POST</strong> new content here via the
+  <a href="<%= url("/submit") %>">API end point</a>.
+</p>
 
-<p>If a file was pushed here, you should have a link to it, and that link will ask you for your username and password.</p>
+<p>
+  If a file was pushed here, you should have a link to it, and that link will
+  ask you for your username and password.
+</p>
+
+<p>
+  If you're the admin user, you also have the ability to download a copy of
+  <a href="<%= url("/secure/private-key") %>">the private key</a>.
+  If you do this, keep it VERY secure. It's the lynchpin that's keeping all
+  the data secure.
+</p>

@@ -3,11 +3,17 @@
 <p>
   As this is the first time this instance has been run, we don't have any
   users yet. As you are the first person to visit, you get to create the
-  first account.
+  admin account.
+</p>
+
+<p>
+  This will also create the public/private key pair used to keep pushed data
+  secure. At some point, a sysadmin should create a copy of the private key
+  just incase all the users forget their passwords at once.
 </p>
 
 <form action="<%= url("/first-account-setup") %>" method="post">
-  <label>Username: <input name="username" type="text" placeholder="bobsmith"/></label>
+  <label>Username: <input name="username" type="text" value="admin" readonly="true"/></label>
   <label>Password: <input name="password" type="password"/></label>
   <label>Password (again): <input name="password_confirmation" type="password"/></label>
   <input type="submit" value="Create Account" />
