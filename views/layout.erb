@@ -4,7 +4,11 @@
     <style>
       body{
         font-family: sans-serif;
-        background: url(<%= url("/logo.png") %>) no-repeat 10px 10px;
+      }
+      a#logo {
+        position: absolute;
+        top: 10px;
+        left: 10px;
       }
       form label {
         display: block;
@@ -23,6 +27,8 @@
     </style>
   </head>
   <body>
+    <a id="logo" href="<%= url("/") %>"><img src="<%= url("/logo.png") %>" width="300" height="300"/></a>
+
     <section id="main">
       <%= yield %>
     </selected>
