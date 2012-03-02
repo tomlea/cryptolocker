@@ -7,12 +7,24 @@ class Cryptolocker::UI < Sinatra::Application
   def protected!
     unless authorized?
       response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
-      throw(:halt, [401, "Not authorized\n"])
+      halt 401, "Not authorized\n"
+    end
+  end
+
+  def load_user
+    auth =  Rack::Auth::Basic::Request.new(request.env)
+    if auth.provided? && auth.basic? && auth.credentials
+      username, password = auth.credentials
+      return Cryptolocker::User.find(username, password)
+    else
+      false
     end
   end
 
   def bounce_back_if_not_set_up!
-    redirect("/") if Cryptolocker.initial_setup_mode?
+    if Cryptolocker.initial_setup_mode?
+      redirect("/")
+    end
   end
 
   def protect_and_bounce_back_if_not_set_up!
@@ -27,18 +39,12 @@ class Cryptolocker::UI < Sinatra::Application
   helpers do
     attr_reader :user
 
+    def logged_in?
+      !!user
+    end
+
     def admin?
       authorized? and user.username == "admin"
-    end
-  end
-
-  def load_user
-    auth =  Rack::Auth::Basic::Request.new(request.env)
-    if auth.provided? && auth.basic? && auth.credentials
-      username, password = auth.credentials
-      return Cryptolocker::User.find(username, password)
-    else
-      false
     end
   end
 
@@ -53,6 +59,25 @@ class Cryptolocker::UI < Sinatra::Application
   post '/first-account-setup' do
     Cryptolocker::User.create!(params[:username], params[:password], params[:password_confirmation])
     redirect("/")
+  end
+
+  put '/submit' do
+    bounce_back_if_not_set_up!
+    ident = Cryptolocker::Data.receive(request.body)
+    url("/secure/download/#{ident}") + "\n"
+  end
+
+  get '/secure/download/:ident' do
+    protect_and_bounce_back_if_not_set_up!
+
+    if data = Cryptolocker::Data.read(params[:ident], user)
+      content_type "text/plain"
+      data
+    else
+      @message = "Could not find the data you were after. Are you sure you didn't simply make up the URL?"
+      status 404
+      erb :error
+    end
   end
 
   get '/submit' do

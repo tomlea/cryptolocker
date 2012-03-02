@@ -1,7 +1,7 @@
 <h1>There is nothing much to see here.</h1>
 
 <p>
-  You can <strong>POST</strong> new content here via the
+  You can <strong>PUT</strong> new content here via the
   <a href="<%= url("/submit") %>">API end point</a>.
 </p>
 
@@ -10,6 +10,14 @@
   ask you for your username and password.
 </p>
 
+<h2>Normal Users <%= "(that's you, that it)" if logged_in? and not admin? %></h2>
+<p>
+  There is not a huge amount of stuff you can do here apart from 
+  <a href="<%= url("/secure/users") %>">changing your password</a>.
+  Sorry about that.
+</p>
+
+<h2>Admin User <%= "(that's you, that it)" if admin? %></h2>
 <p>
   If you're the admin user, you also have the ability to download a copy of
   <a href="<%= url("/secure/private-key") %>">the private key</a>
