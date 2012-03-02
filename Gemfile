@@ -1,6 +1,7 @@
 source "http://rubygems.org"
 
 gem "sinatra"
+gem "aws-s3"
 
 group :test do
   gem "rspec"

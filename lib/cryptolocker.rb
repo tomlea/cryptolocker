@@ -8,6 +8,8 @@ require "openssl"
 module Cryptolocker
   attr_accessor :store
 
+  autoload :S3Store, "cryptolocker/s3_store"
+
   require "openssl"
 
   def public_key
