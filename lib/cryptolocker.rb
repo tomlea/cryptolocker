@@ -6,7 +6,12 @@ Bundler.require(:default)
 require "openssl"
 
 module Cryptolocker
-  attr_accessor :store
+  attr_reader :store
+
+  def store=(v)
+    @store = v
+    @public_key = nil
+  end
 
   autoload :S3Store, "cryptolocker/s3_store"
 
