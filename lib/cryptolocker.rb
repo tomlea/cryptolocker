@@ -13,11 +13,11 @@ module Cryptolocker
   require "openssl"
 
   def public_key
-    store["public_key"]
+    @public_key ||= store["public_key"]
   end
 
   def public_key=(v)
-    store["public_key"] = v
+    @public_key = store["public_key"] = v
   end
 
   def initial_setup_mode?
