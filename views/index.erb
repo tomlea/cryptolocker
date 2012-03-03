@@ -25,3 +25,14 @@
   the data secure).
   Or you can <a href="<%= url("/secure/users") %>">manage other users</a>.
 </p>
+
+<h2>About</h2>
+<p>
+  Cryprolocker is an encrypted file store that uses RSA asymmetric encryption
+  to allow unauthenticated writes to AES encrypted files, while
+  requiring authentication to read the files back again.
+</p>
+<p>
+  It is designed so the system cannot decrypt it's own files, as the user's
+  passwords are used as encryption keys for the store.
+</p>
