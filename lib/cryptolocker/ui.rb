@@ -82,7 +82,8 @@ class Cryptolocker::UI < Sinatra::Application
 
   get '/submit' do
     bounce_back_if_not_set_up!
-    @message = "One does not simply GET the POST API end point."
+    @message = "One does not simply GET the PUT API end point."
+    @more_info = erb(:api_help, :layout => false)
     erb :error
   end
 

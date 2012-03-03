@@ -1,0 +1,11 @@
+<h2>API reference</h2>
+<p>
+  Simply make a PUT request, with your file as the body, to this URL.
+  You should get a 200 response, with a URL for the uploaded document in the
+  body.
+</p>
+
+<h2>PUTing Documents via curl</h2>
+<pre><code>
+curl -T [FILE_NAME] <%= url("/submit") %>
+</code></pre>
