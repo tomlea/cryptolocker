@@ -12,6 +12,8 @@ class Cryptolocker::S3Store
   def [](key)
     obj = S3Object.find(key, bucket_name)
     obj && obj.value
+  rescue AWS::S3::NoSuchKey
+    nil
   end
 
   def []=(k,v)
@@ -20,6 +22,7 @@ class Cryptolocker::S3Store
 
   def delete(key)
     S3Object.delete(key, bucket_name)
+  rescue AWS::S3::NoSuchKey
   end
 
   def keys(prefix = "")
