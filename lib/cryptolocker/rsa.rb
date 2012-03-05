@@ -1,6 +1,6 @@
 require "openssl"
 class Cryptolocker::RSA
-  KEY_LEN = 1024
+  KEY_LEN = 4096
   KEY_BYTE_LENGTH = KEY_LEN/8
 
   def self.generate_keys
