@@ -1,7 +1,9 @@
 require "openssl"
 class Cryptolocker::RSA
   KEY_LEN = 4096
-  KEY_BYTE_LENGTH = KEY_LEN/8
+  def key_byte_length
+    KEY_LEN/8
+  end
 
   def self.generate_keys
     new_key = OpenSSL::PKey::RSA.generate( KEY_LEN )
@@ -28,8 +30,8 @@ class Cryptolocker::RSA
   end
 
   def decrypt(value)
-    encrypted_key = value[0...KEY_BYTE_LENGTH]
-    data = value[KEY_BYTE_LENGTH..-1]
+    encrypted_key = value[0...key_byte_length]
+    data = value[key_byte_length..-1]
     one_time_key = @key.private_decrypt(encrypted_key)
     Cryptolocker::AES.decrypt(data, one_time_key)
   end
