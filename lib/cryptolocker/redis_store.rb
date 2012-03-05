@@ -3,8 +3,8 @@ require "redis"
 class Cryptolocker::RedisStore
   attr_reader :redis
 
-  def initialize(redis_url)
-    @redis = Redis.new(redis_url)
+  def initialize(*args)
+    @redis = Redis.new(*args)
   end
 
   def [](key)
