@@ -1,0 +1,16 @@
+# Configure your storage back end here.
+
+# Using Amazon S3
+
+# require 'aws/s3'
+# AWS::S3::Base.establish_connection!(
+#   :access_key_id     => 'AAAAA',
+#   :secret_access_key => 'BBBBB'
+# )
+# 
+# Cryptolocker.store = Cryptolocker::S3Store.new("my-s3-bucket")
+
+
+# Using redis:
+
+# Cryptolocker.store = Cryptolocker::RedisStore.new(:db => 1)
