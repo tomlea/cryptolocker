@@ -13,15 +13,14 @@ module Cryptolocker::AES
     cipher.iv = iv = cipher.random_iv
     ciphertext = cipher.update(data)
     ciphertext << cipher.final
-    return iv + ciphertext
+    return [iv, ciphertext].pack("a#{cipher.iv_len}a*")
   end
 
   def decrypt(data, key)
     return data if data.nil? or data.empty?
 
     cipher = OpenSSL::Cipher.new(CIPHER)
-    iv = data[0, cipher.iv_len]
-    ciphertext = data[cipher.iv_len..-1]
+    iv, ciphertext = data.unpack("a#{cipher.iv_len}a*")
     cipher.decrypt
     cipher.key = key
     cipher.iv = iv

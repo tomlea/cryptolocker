@@ -26,12 +26,11 @@ class Cryptolocker::RSA
   def encrypt(value)
     one_time_key = Cryptolocker::AES.generate_random_key
     encrypted_key = @key.public_encrypt(one_time_key)
-    encrypted_key + Cryptolocker::AES.encrypt(value, one_time_key)
+    [encrypted_key, Cryptolocker::AES.encrypt(value, one_time_key)].pack("a#{key_byte_length}a*")
   end
 
   def decrypt(value)
-    encrypted_key = value[0...key_byte_length]
-    data = value[key_byte_length..-1]
+    encrypted_key, data = value.unpack("a#{key_byte_length}a*")
     one_time_key = @key.private_decrypt(encrypted_key)
     Cryptolocker::AES.decrypt(data, one_time_key)
   end
