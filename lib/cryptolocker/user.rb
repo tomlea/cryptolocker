@@ -34,6 +34,7 @@ class Cryptolocker::User
   end
 
   def self.valid_username_and_password?(username, password)
+    return false unless Cryptolocker.public_key
     personal_key = AES.key_from_password(password, Cryptolocker.public_key)
     private_key =  AES.decrypt(Cryptolocker.store["users.#{username}.key"], personal_key)
     Cryptolocker::RSA.valid_pair?(Cryptolocker.public_key, private_key)
