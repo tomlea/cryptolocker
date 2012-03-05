@@ -18,9 +18,11 @@ GEM
     guard-rspec (0.6.0)
       guard (>= 0.10.0)
     mime-types (1.17.2)
+    pbkdf2 (0.1.0)
     rack (1.4.1)
     rack-protection (1.2.0)
       rack
+    redis (2.2.2)
     rspec (2.8.0)
       rspec-core (~> 2.8.0)
       rspec-expectations (~> 2.8.0)
@@ -46,5 +48,7 @@ DEPENDENCIES
   guard
   guard-bundler
   guard-rspec
+  pbkdf2
+  redis
   rspec
   sinatra

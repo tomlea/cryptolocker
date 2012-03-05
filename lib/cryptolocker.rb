@@ -14,6 +14,7 @@ module Cryptolocker
   end
 
   autoload :S3Store, "cryptolocker/s3_store"
+  autoload :RedisStore, "cryptolocker/redis_store"
 
   require "openssl"
 

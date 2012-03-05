@@ -1,5 +1,8 @@
+require 'pbkdf2'
+
 module Cryptolocker::AES
-  CIPHER = 'aes-256-cbc'
+  KEY_LENGTH = 256
+  CIPHER = "aes-#{KEY_LENGTH}-cbc"
 
   def encrypt(data, key)
     return data if data.nil? or data.empty?
@@ -31,8 +34,13 @@ module Cryptolocker::AES
     OpenSSL::Cipher.new(CIPHER).random_key
   end
 
-  def key_from_password(password)
-    OpenSSL::Digest::SHA512.new(password).digest[0..key_len]
+  def key_from_password(password, salt)
+    PBKDF2.new{|generator| 
+      generator.password = password
+      generator.salt = salt
+      generator.iterations = 1_000
+      generator.key_length = KEY_LENGTH
+    }.bin_string
   end
 
   def key_len

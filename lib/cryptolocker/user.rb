@@ -12,7 +12,7 @@ class Cryptolocker::User
     end
 
 
-    personal_key = AES.key_from_password(password)
+    personal_key = AES.key_from_password(password, Cryptolocker.public_key)
 
     Cryptolocker.store["users.#{username}.key"] = AES.encrypt(shared_key, personal_key)
 
@@ -34,7 +34,7 @@ class Cryptolocker::User
   end
 
   def self.valid_username_and_password?(username, password)
-    personal_key = AES.key_from_password(password)
+    personal_key = AES.key_from_password(password, Cryptolocker.public_key)
     private_key =  AES.decrypt(Cryptolocker.store["users.#{username}.key"], personal_key)
     Cryptolocker::RSA.valid_pair?(Cryptolocker.public_key, private_key)
   rescue OpenSSL::Cipher::CipherError
@@ -51,7 +51,7 @@ class Cryptolocker::User
   end
 
   def decrypt(value)
-    @my_key ||= AES.key_from_password(password)
+    @my_key ||= AES.key_from_password(password, Cryptolocker.public_key)
     AES.decrypt(value, @my_key)
   end
 
