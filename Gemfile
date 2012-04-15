@@ -14,4 +14,5 @@ group :development do
   gem "guard-rspec"
   gem "guard-bundler"
   gem "growl"
+  gem "rake"
 end
